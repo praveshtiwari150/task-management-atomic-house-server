@@ -42,6 +42,7 @@ function startServer() {
         app.use("/graphql", (0, express4_1.expressMiddleware)(server));
         app.listen(port, () => {
             console.log(`Server is running on ${port}`);
+            console.log(client_url);
         });
     });
 }

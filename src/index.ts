@@ -36,6 +36,7 @@ async function startServer() {
 
     app.listen(port, () => {
         console.log(`Server is running on ${port}`);
+        console.log(client_url)
     });
 }
 
