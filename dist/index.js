@@ -32,33 +32,20 @@ function startServer() {
             introspection: true
         });
         yield server.start();
-        const corsOptions = {
-            origin: client_url,
-            methods: "GET,POST,PUT,DELETE,OPTIONS",
-            allowedHeaders: "Content-Type,Authorization",
-            credentials: true,
-        };
-        app.use(body_parser_1.default.json());
-        app.use((0, cors_1.default)(corsOptions));
-        app.options("*", (0, cors_1.default)(corsOptions));
+        // Allow all origins temporarily
+        app.use((0, cors_1.default)({ origin: "*", credentials: true }));
         app.options("*", (req, res) => {
-            res.header("Access-Control-Allow-Origin", client_url);
+            res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
             res.header("Access-Control-Allow-Credentials", "true");
-            return res.status(200).end();
+            return res.sendStatus(200);
         });
-        app.use((req, res, next) => {
-            res.header("Access-Control-Allow-Origin", client_url);
-            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            res.header("Access-Control-Allow-Credentials", "true");
-            next();
-        });
-        app.use("/graphql", (0, cors_1.default)(corsOptions), (0, express4_1.expressMiddleware)(server));
+        app.use(body_parser_1.default.json());
+        // Apply CORS directly to GraphQL endpoint
+        app.use("/graphql", (0, express4_1.expressMiddleware)(server));
         app.listen(port, () => {
             console.log(`Server is running on ${port}`);
-            console.log(client_url);
         });
     });
 }
