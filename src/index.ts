@@ -22,15 +22,18 @@ async function startServer() {
 
     await server.start();
 
-    app.use(
-        cors({
-            origin: client_url
-        })
-    );
+    const corsOptions = {
+        origin: client_url,
+        methods: "GET,POST,PUT,DELETE,OPTIONS",
+        allowedHeaders: "Content-Type,Authorization",
+        credentials: true,
+    };
     app.use(bodyParser.json());
 
-    app.options("*", cors());
-    app.use("/graphql", expressMiddleware(server));
+    app.use(cors(corsOptions));
+    app.options("*", cors(corsOptions));
+
+    app.use("/graphql", cors(corsOptions), expressMiddleware(server));
 
     app.listen(port, () => {
         console.log(`Server is running on ${port}`);

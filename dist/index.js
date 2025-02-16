@@ -32,12 +32,16 @@ function startServer() {
             introspection: true
         });
         yield server.start();
-        app.use((0, cors_1.default)({
-            origin: client_url
-        }));
+        const corsOptions = {
+            origin: client_url,
+            methods: "GET,POST,PUT,DELETE,OPTIONS",
+            allowedHeaders: "Content-Type,Authorization",
+            credentials: true,
+        };
         app.use(body_parser_1.default.json());
-        app.options("*", (0, cors_1.default)());
-        app.use("/graphql", (0, express4_1.expressMiddleware)(server));
+        app.use((0, cors_1.default)(corsOptions));
+        app.options("*", (0, cors_1.default)(corsOptions));
+        app.use("/graphql", (0, cors_1.default)(corsOptions), (0, express4_1.expressMiddleware)(server));
         app.listen(port, () => {
             console.log(`Server is running on ${port}`);
             console.log(client_url);
