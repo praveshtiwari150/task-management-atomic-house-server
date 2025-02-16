@@ -24,14 +24,12 @@ async function startServer() {
 
     app.use(
         cors({
-            origin: client_url,
-            methods: ["GET", "POST", "OPTIONS"], // Allow necessary HTTP methods
-            allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
-            credentials: true, // Enable cookies if needed
+            origin: client_url
         })
     );
     app.use(bodyParser.json());
 
+    app.options("*", cors());
     app.use("/graphql", expressMiddleware(server));
 
     app.listen(port, () => {

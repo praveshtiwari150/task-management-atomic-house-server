@@ -33,12 +33,10 @@ function startServer() {
         });
         yield server.start();
         app.use((0, cors_1.default)({
-            origin: client_url,
-            methods: ["GET", "POST", "OPTIONS"], // Allow necessary HTTP methods
-            allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
-            credentials: true, // Enable cookies if needed
+            origin: client_url
         }));
         app.use(body_parser_1.default.json());
+        app.options("*", (0, cors_1.default)());
         app.use("/graphql", (0, express4_1.expressMiddleware)(server));
         app.listen(port, () => {
             console.log(`Server is running on ${port}`);
