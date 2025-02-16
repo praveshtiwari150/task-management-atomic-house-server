@@ -33,14 +33,7 @@ function startServer() {
         });
         yield server.start();
         // Allow all origins temporarily
-        app.use((0, cors_1.default)({ origin: "*", credentials: true }));
-        app.options("*", (req, res) => {
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            res.header("Access-Control-Allow-Credentials", "true");
-            return res.sendStatus(200);
-        });
+        app.use((0, cors_1.default)({ origin: process.env.CLIENT_URL }));
         app.use(body_parser_1.default.json());
         // Apply CORS directly to GraphQL endpoint
         app.use("/graphql", (0, express4_1.expressMiddleware)(server));

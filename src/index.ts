@@ -23,14 +23,8 @@ async function startServer() {
     await server.start();
 
     // Allow all origins temporarily
-    app.use(cors({ origin: "*", credentials: true }));
-    app.options("*", (req, res) => {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        res.header("Access-Control-Allow-Credentials", "true");
-        return res.sendStatus(200);
-    });
+    app.use(cors({ origin: process.env.CLIENT_URL }));
+    
 
     app.use(bodyParser.json());
 
