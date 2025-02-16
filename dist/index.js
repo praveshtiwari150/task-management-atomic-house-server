@@ -41,6 +41,20 @@ function startServer() {
         app.use(body_parser_1.default.json());
         app.use((0, cors_1.default)(corsOptions));
         app.options("*", (0, cors_1.default)(corsOptions));
+        app.options("*", (req, res) => {
+            res.header("Access-Control-Allow-Origin", client_url);
+            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            res.header("Access-Control-Allow-Credentials", "true");
+            return res.status(200).end();
+        });
+        app.use((req, res, next) => {
+            res.header("Access-Control-Allow-Origin", client_url);
+            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            res.header("Access-Control-Allow-Credentials", "true");
+            next();
+        });
         app.use("/graphql", (0, cors_1.default)(corsOptions), (0, express4_1.expressMiddleware)(server));
         app.listen(port, () => {
             console.log(`Server is running on ${port}`);
