@@ -22,6 +22,7 @@ const schema_1 = require("./graphql/schema");
 const resolvers_1 = require("./graphql/resolvers");
 dotenv_1.default.config();
 const port = process.env.PORT || 3000;
+const client_url = process.env.CLIENT_URL;
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = (0, express_1.default)();
@@ -31,7 +32,12 @@ function startServer() {
             introspection: true
         });
         yield server.start();
-        app.use((0, cors_1.default)());
+        app.use((0, cors_1.default)({
+            origin: client_url,
+            methods: ["GET", "POST", "OPTIONS"], // Allow necessary HTTP methods
+            allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+            credentials: true, // Enable cookies if needed
+        }));
         app.use(body_parser_1.default.json());
         app.use("/graphql", (0, express4_1.expressMiddleware)(server));
         app.listen(port, () => {

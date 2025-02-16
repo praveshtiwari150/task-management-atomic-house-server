@@ -10,6 +10,7 @@ import { taskResolver } from "./graphql/resolvers";
 
 dotenv.config();
 const port = process.env.PORT || 3000;
+const client_url = process.env.CLIENT_URL as string;
 
 async function startServer() {
     const app = express();
@@ -21,7 +22,14 @@ async function startServer() {
 
     await server.start();
 
-    app.use(cors());
+    app.use(
+        cors({
+            origin: client_url,
+            methods: ["GET", "POST", "OPTIONS"], // Allow necessary HTTP methods
+            allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+            credentials: true, // Enable cookies if needed
+        })
+    );
     app.use(bodyParser.json());
 
     app.use("/graphql", expressMiddleware(server));
