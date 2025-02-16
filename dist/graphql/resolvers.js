@@ -29,7 +29,7 @@ exports.taskResolver = {
                 success: true
             };
         }),
-        updateTask: (_1, _a) => __awaiter(void 0, [_1, _a], void 0, function* (_, { id, title, description, status }) {
+        updateTask: (_2, _b) => __awaiter(void 0, [_2, _b], void 0, function* (_, { id, title, description, status }) {
             try {
                 const task = yield db_1.prisma.task.findUnique({ where: { id } });
                 if (!task) {
@@ -49,7 +49,7 @@ exports.taskResolver = {
                 throw new Error("Failed to update task");
             }
         }),
-        deleteTask: (_1, _a) => __awaiter(void 0, [_1, _a], void 0, function* (_, { id }) {
+        deleteTask: (_3, _c) => __awaiter(void 0, [_3, _c], void 0, function* (_, { id }) {
             try {
                 const task = yield db_1.prisma.task.findUnique({
                     where: { id }
